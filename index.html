@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>7.9 BROTHERS ONLINE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --primary: #1e88e5;
+      --primary-soft: #e3f2fd;
+      --bg: #f5f5f7;
+      --card-bg: #ffffff;
+      --text-main: #222222;
+      --text-soft: #666666;
+      --border-soft: #e0e0e0;
+      --radius-lg: 14px;
+      --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    header {
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      color: white;
+      padding: 16px 6vw 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 16px;
+      justify-content: space-between;
+    }
+
+    .site-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .site-slogan {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .creator-note {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    .shipping-note {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+      gap: 16px;
+      padding: 16px 6vw 32px;
+    }
+
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+      height: fit-content;
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar h2 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .sidebar small {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+
+    .sidebar-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .brand-btn {
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--text-soft);
+      transition: background 0.15s ease, color 0.15s ease, transform 0.08s ease;
+      margin-bottom: 4px;
+    }
+
+    .brand-btn:hover {
+      background: var(--primary-soft);
+      color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .brand-btn.active {
+      background: #1976d2;
+      color: white;
+      font-weight: 600;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Pestañas superiores de categorías */
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .category-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      background: var(--primary-soft);
+      color: #1565c0;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.08s ease;
+    }
+
+    .category-btn:hover {
+      transform: translateY(-1px);
+      background: #bbdefb;
+    }
+
+    .category-btn.active {
+      background: #1565c0;
+      color: white;
+      font-weight: 600;
+    }
+
+    .category-btn-side {
+      width: 100%;
+      text-align: left;
+    }
+
+    .top-bar {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 10px 12px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      min-width: 220px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .search-wrapper input:focus {
+      border-color: #1e88e5;
+      box-shadow: 0 0 0 2px var(--primary-soft);
+    }
+
+    #productCount {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    }
+
+    .image-wrapper {
+      background: #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      height: 170px;
+    }
+
+    .image-wrapper img {
+      max-height: 150px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+
+    .card-body {
+      padding: 10px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card h3 {
+      font-size: 0.95rem;
+      line-height: 1.1rem;
+    }
+
+    .brand {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .price {
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* Cantidad */
+    .qty-row {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .qty-label {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border-soft);
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .qty-btn:hover {
+      background: var(--primary-soft);
+      border-color: #1e88e5;
+    }
+
+    .qty-input {
+      width: 34px;
+      text-align: center;
+      border-radius: 6px;
+      border: 1px solid var(--border-soft);
+      padding: 2px;
+      font-size: 0.85rem;
+      background: #ffffff;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px 10px;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px dashed var(--border-soft);
+    }
+
+    /* 🎨 TEMAS POR SECCIÓN (colores distintos) */
+
+    /* Perfume hombre */
+    body.theme-hombre .image-wrapper {
+      background: #e3f2fd;
+    }
+    body.theme-hombre .price {
+      color: #1e88e5;
+    }
+    body.theme-hombre .brand {
+      color: #546e7a;
+    }
+    body.theme-hombre .card {
+      border-color: #bbdefb;
+    }
+
+    /* Perfume mujer */
+    body.theme-mujer .image-wrapper {
+      background: #fce4ec;
+    }
+    body.theme-mujer .price {
+      color: #d81b60;
+    }
+    body.theme-mujer .brand {
+      color: #ad1457;
+    }
+    body.theme-mujer .card {
+      border-color: #f48fb1;
+    }
+
+    /* Splash Men! */
+    body.theme-splashMen .image-wrapper {
+      background: #e0f2f1;
+    }
+    body.theme-splashMen .price {
+      color: #00796b;
+    }
+    body.theme-splashMen .brand {
+      color: #004d40;
+    }
+    body.theme-splashMen .card {
+      border-color: #80cbc4;
+    }
+
+    /* Splash Fragrance Women! */
+    body.theme-splashWomen .image-wrapper {
+      background: #fff3e0;
+    }
+    body.theme-splashWomen .price {
+      color: #f57c00;
+    }
+    body.theme-splashWomen .brand {
+      color: #ef6c00;
+    }
+    body.theme-splashWomen .card {
+      border-color: #ffb74d;
+    }
+
+    /* Accesorios */
+    body.theme-accesorios .image-wrapper {
+      background: #f3e5f5;
+    }
+    body.theme-accesorios .price {
+      color: #6a1b9a;
+    }
+    body.theme-accesorios .brand {
+      color: #4a148c;
+    }
+    body.theme-accesorios .card {
+      border-color: #ce93d8;
+    }
+
+    /* Sección 1 */
+    body.theme-seccion1 .image-wrapper {
+      background: #e8f5e9;
+    }
+    body.theme-seccion1 .price {
+      color: #2e7d32;
+    }
+    body.theme-seccion1 .brand {
+      color: #1b5e20;
+    }
+    body.theme-seccion1 .card {
+      border-color: #a5d6a7;
+    }
+
+    /* Sección 2 */
+    body.theme-seccion2 .image-wrapper {
+      background: #ede7f6;
+    }
+    body.theme-seccion2 .price {
+      color: #5e35b1;
+    }
+    body.theme-seccion2 .brand {
+      color: #4527a0;
+    }
+    body.theme-seccion2 .card {
+      border-color: #b39ddb;
+    }
+
+    /* Sección 3 */
+    body.theme-seccion3 .image-wrapper {
+      background: #fff8e1;
+    }
+    body.theme-seccion3 .price {
+      color: #f9a825;
+    }
+    body.theme-seccion3 .brand {
+      color: #f57f17;
+    }
+    body.theme-seccion3 .card {
+      border-color: #ffe082;
+    }
+
+    /* 🛒 Carrito en sidebar */
+    .cart {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--border-soft);
+    }
+
+    .cart h2 {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .cart small {
+      margin-bottom: 6px;
+    }
+
+    .cart-items {
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+    }
+
+    .cart-empty {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: #f5f5f5;
+      border: 1px solid #eeeeee;
+    }
+
+    .cart-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cart-item-name {
+      font-size: 0.78rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cart-item-line {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .cart-item-total {
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .cart-summary {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 6px;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cart-summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-summary-row strong {
+      font-size: 0.85rem;
+    }
+
+    .cart-discount {
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    .cart-total {
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* 💬 WhatsApp flotante */
+    .floating-wa {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      max-width: 270px;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+      padding: 10px 12px;
+      border: 1px solid #e0e0e0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.78rem;
+    }
+
+    .floating-wa-text {
+      line-height: 1.3;
+    }
+
+    .floating-wa-number {
+      font-size: 0.78rem;
+      color: #388e3c;
+      font-weight: 600;
+    }
+
+    .floating-wa-btn {
+      margin-top: 4px;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      background: #25d366;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      box-shadow: 0 3px 8px rgba(37, 211, 102, 0.45);
+    }
+
+    .floating-wa-btn:hover {
+      background: #1eb954;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(37, 211, 102, 0.55);
+    }
+
+    .floating-wa-btn span {
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        order: -1;
+      }
+
+      header {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .floating-wa {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body class="theme-hombre">
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="site-title">7.9 BROTHERS ONLINE</div>
+        <div class="site-slogan">Precios y calidad a el alcance de todos</div>
+        <div class="creator-note">
+          Esta página ha sido creada por A.I.A., especialistas en soluciones comerciales, contacto +573233992683, expertos en construcción de puntos de venta físicos y virtuales
+        </div>
+      </div>
+    </div>
+    <div class="shipping-note">
+      * Por solicitud del cliente, los costos de fletes e impuestos se anexan al valor final.
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <h2>Categorías</h2>
+      <small>Elige la sección de la tienda</small>
+      <div class="sidebar-categories">
+        <button class="category-btn category-btn-side active" data-category="hombre">Perfume hombre</button>
+        <button class="category-btn category-btn-side" data-category="mujer">Perfume mujer</button>
+        <button class="category-btn category-btn-side" data-category="splashMen">Splash Men!</button>
+        <button class="category-btn category-btn-side" data-category="splashWomen">Splash Fragrance Women!</button>
+        <button class="category-btn category-btn-side" data-category="accesorios">Accesorios</button>
+        <button class="category-btn category-btn-side" data-category="seccion1">Sección 1</button>
+        <button class="category-btn category-btn-side" data-category="seccion2">Sección 2</button>
+        <button class="category-btn category-btn-side" data-category="seccion3">Sección 3</button>
+      </div>
+
+      <h2>Marcas</h2>
+      <small>Filtra el catálogo por marca</small>
+      <button class="brand-btn active" data-brand="Todos">Todos los productos</button>
+      <div id="brandList"></div>
+
+      <!-- 🛒 Carrito -->
+      <div class="cart">
+        <h2>Tu pedido</h2>
+        <small>Selecciona cantidades en los productos</small>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span>Unidades:</span>
+            <span id="cartUnits">0</span>
+          </div>
+          <div class="cart-summary-row">
+            <span>Subtotal:</span>
+            <span id="cartSubtotal">$0</span>
+          </div>
+          <div id="cartDiscountRow" class="cart-summary-row cart-discount" style="display:none;">
+            <span>Te estás ahorrando:</span>
+            <span id="cartDiscount">$0</span>
+          </div>
+          <div class="cart-summary-row cart-total">
+            <span>Total a pagar:</span>
+            <span id="cartTotal">$0</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <!-- Pestañas superiores -->
+      <div class="category-tabs">
+        <button class="category-btn active" data-category="hombre">Perfume hombre</button>
+        <button class="category-btn" data-category="mujer">Perfume mujer</button>
+        <button class="category-btn" data-category="splashMen">Splash Men!</button>
+        <button class="category-btn" data-category="splashWomen">Splash Fragrance Women!</button>
+        <button class="category-btn" data-category="accesorios">Accesorios</button>
+        <button class="category-btn" data-category="seccion1">Sección 1</button>
+        <button class="category-btn" data-category="seccion2">Sección 2</button>
+        <button class="category-btn" data-category="seccion3">Sección 3</button>
+      </div>
+
+      <div class="top-bar">
+        <div class="search-wrapper">
+          <input id="searchInput" type="text" placeholder="Buscar por nombre o marca..." />
+        </div>
+        <div id="productCount"></div>
+      </div>
+
+      <div id="productGrid" class="grid"></div>
+    </section>
+  </main>
+
+  <!-- WhatsApp flotante -->
+  <div class="floating-wa">
+    <div class="floating-wa-text">
+      TOMATE TU TIEMPO, selecciona los productos y las cantidades que deseas.
+      Cuando ya quieras formalizar tu pedido da click en el botón GENERAR PEDIDO, Recuerda que los costos de flette NO ESTAN INCLUIDOS,una vez generes tu pedido debes realizar el pago total para que te despachen los productos,el pago de el envio lo realizas al momento de recibirlo en la direccion que asignes,rectifica que los dattos esten correctos para que la entrega no tenga problemas.
+    </div>
+    <div class="floating-wa-number">WhatsApp: +57 323 399 2683</div>
+    <button id="generateOrderBtn" class="floating-wa-btn">
+      <span>🧾</span> GENERAR PEDIDO
+    </button>
+  </div>
+
+  <script>
+    const whatsappNumber = "573233992683";
+
+    /* 🧴 Productos PERFUME HOMBRE (tus originales) */
+    const products = [
+      { id: "H001a", brand: "Perfume hombre", name: "910 Brothers/ TIENDA ONLINE/ ", price: 00, image: "imgplaceholder.jpg", notes: "", type: "banner" },
+      { id: "H001", brand: "Perfume hombre", name: "212 HÉROES NYC", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H002", brand: "Perfume hombre", name: "212 VIP", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H003", brand: "Perfume hombre", name: "212 VIP Black red", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H004", brand: "Perfume hombre", name: "212 HEROES MEN", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H005", brand: "Perfume hombre", name: "212 MEN NYC", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H006", brand: "Perfume hombre", name: "212 VIP MEN WILD PARTY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H007", brand: "Perfume hombre", name: "212 SEXY MEN", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H008", brand: "Perfume hombre", name: "212 VIP ♥  BLACK", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H009", brand: "Perfume hombre", name: "212 MEN AQUA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H010", brand: "Perfume hombre", name: "CAROLINA HERRERA CH MEN", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H011", brand: "Perfume hombre", name: "BLEU DE CHANEL", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ11", brand: "Perfume hombre", name: "ALLURE SPORT", price: 70000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H012", brand: "Perfume hombre", name: "MOSCHINO TOY BOY", price: 143000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H013", brand: "Perfume hombre", name: "MOSCHINO TOY BOY CABEZA PEQUEÑA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H014", brand: "Perfume hombre", name: "MONT BLANC LEGEND", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H015", brand: "Perfume hombre", name: "SPIRIT", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H016", brand: "Perfume hombre", name: "Mont blanc explorer", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H017", brand: "Perfume hombre", name: "BVGARI AQVA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H018", brand: "Perfume hombre", name: "ACQUA DI GIO", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H019", brand: "Perfume hombre", name: "STARWALKER", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H020", brand: "Perfume hombre", name: "ACQUA DI GIO PROFUMO", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H021", brand: "Perfume hombre", name: "LACOSTE ESSENTIAL", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H022", brand: "Perfume hombre", name: "ARSENAL NEGRA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H023", brand: "Perfume hombre", name: "ARSENAL DORADA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H024", brand: "Perfume hombre", name: "ARSENAL", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H025", brand: "Perfume hombre", name: "LACOSTE NOIR", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H026", brand: "Perfume hombre", name: "LACOSTE BLANC", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H027", brand: "Perfume hombre", name: "LACOSTE ROUGE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H028", brand: "Perfume hombre", name: "LACOSTE AZUL", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H029", brand: "Perfume hombre", name: "PI DE GIVENCHY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H030", brand: "Perfume hombre", name: "GIVENCHY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H031", brand: "Perfume hombre", name: "LACOSTE VERDE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H032", brand: "Perfume hombre", name: "DOLCE & GABBANA BLUE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H033", brand: "Perfume hombre", name: "DOLCE & GABBANA BLUE Love Is Love", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ33", brand: "Perfume hombre", name: "MERCEDES-BENZ INTENSE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H034", brand: "Perfume hombre", name: "LOUS VUITTON IMAGINATION", price: 110000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H035", brand: "Perfume hombre", name: "LOUS VUITTON Repujada", price: 110000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H036", brand: "Perfume hombre", name: "LOUS VUITTON CITY OF TEARS", price: 110000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ36", brand: "Perfume hombre", name: "LOUS VUITTON  L’IMMENSITE", price: 110000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HG36", brand: "Perfume hombre", name: "LOUS VUITTON IMAGINATION", price: 110000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H037", brand: "Perfume hombre", name: "HUGO BOSS IN MOTION", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H038", brand: "Perfume hombre", name: "DECLARATION DE CARTIER", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ38", brand: "Perfume hombre", name: "LOUS VUITTON LES SABLES ROSES", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H039", brand: "Perfume hombre", name: "HUGO BOSS DIFFERENT", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H040", brand: "Perfume hombre", name: "HUGO BOSS UNLIMITED", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H041", brand: "Perfume hombre", name: "HUGO BOSS MAN", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H042", brand: "Perfume hombre", name: "HUGO BOSS RED", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H043", brand: "Perfume hombre", name: "HUGO BOSS NIGHT", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ43", brand: "Perfume hombre", name: "HUGO BOSS SPORT", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HG43", brand: "Perfume hombre", name: "HUGO BOSS BOTTLED", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H044", brand: "Perfume hombre", name: "CREED SILVER", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H045", brand: "Perfume hombre", name: "CREED HIMALAYA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ45", brand: "Perfume hombre", name: "CREED AVENTUS", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HG45", brand: "Perfume hombre", name: "CREED MILLESIME IMPERIAL ", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H046", brand: "Perfume hombre", name: "360 MEN", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H047", brand: "Perfume hombre", name: "Calvin Klein ONE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HQ47", brand: "Perfume hombre", name: "Calvin Klein BE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "HG47", brand: "Perfume hombre", name: "Calvin Klein ETERNITY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H048", brand: "Perfume hombre", name: "VERSACE EROS FLAME", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H047", brand: "Perfume hombre", name: "CK BE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H049", brand: "Perfume hombre", name: "VERSACE DYLAN BLUE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H001a", brand: "Perfume hombre", name: "910 Brothers/ TIENDA ONLINE/ ", price: 00, image: "imgplaceholder.jpg", notes: "", type: "banner" },
+      { id: "H050", brand: "Perfume hombre", name: "VERSACE EROS", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H051", brand: "Perfume hombre", name: "VERSACE EROS ENERGY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H051B", brand: "Perfume hombre", name: "VERSACE EAU FRAICHE ", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H051C", brand: "Perfume hombre", name: "VERSACE EROS GRANDE 200ML", price: 128000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H052", brand: "Perfume hombre", name: "LAPIDUS POUR HOMME", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H053", brand: "Perfume hombre", name: "JR 10 MONASTERY", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H054", brand: "Perfume hombre", name: "CLINIQUE HAPPY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H056", brand: "Perfume hombre", name: "DIOR SAUVAGE ELIXIR", price: 121000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H057", brand: "Perfume hombre", name: "POLO RED", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H058", brand: "Perfume hombre", name: "POLO BLUE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H059", brand: "Perfume hombre", name: "POLO BLACK", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H060", brand: "Perfume hombre", name: "DIOR SAUVAGE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H061", brand: "Perfume hombre", name: "DIOR FAHRENHEIT", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H062", brand: "Perfume hombre", name: "NAUTICA VOYAGE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H063", brand: "Perfume hombre", name: "TOMMY MEN ", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H063B", brand: "Perfume hombre", name: "TOMMY MEN IMPACT ", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H064", brand: "Perfume hombre", name: "PHANTOM LEGION", price: 99000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H065", brand: "Perfume hombre", name: "PHANTOM PARFUM 100ml", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H066", brand: "Perfume hombre", name: "PHANTOM INTENSE", price: 99000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H067", brand: "Perfume hombre", name: "BLACK XS", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H068", brand: "Perfume hombre", name: "PURÉ XS", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H069", brand: "Perfume hombre", name: "PHANTOM R  150ml", price: 99000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H065", brand: "Perfume hombre", name: "PHANTOM GRANDE 150ml", price: 99000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H070", brand: "Perfume hombre", name: "BLACK XS L’EXCES", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H071", brand: "Perfume hombre", name: "PACO ROBANNE ONE MILLION PRIVÉ", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H072", brand: "Perfume hombre", name: "PACO ROBANNE ONE MILLION PARFUM", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H073", brand: "Perfume hombre", name: "PACO ROBANNE ONE MILLION ELIXIR", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H074", brand: "Perfume hombre", name: "PACO ROBANNE ONE MILLION LUCKY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H075", brand: "Perfume hombre", name: "PACO ROBANNE ONE MILLION OUD", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H076", brand: "Perfume hombre", name: "PACO ROBANNE ONE MILLION  ROYAL", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H077", brand: "Perfume hombre", name: "ONE MILLION GOLD", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H078", brand: "Perfume hombre", name: "DESCUENTO DEL 20% SI LLEVA 5 UNIDADES EN ADELANTE ", price: 000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H079", brand: "Perfume hombre", name: "INVICTUS LEGEND", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H080", brand: "Perfume hombre", name: "INVICTUS INTENSE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H081", brand: "Perfume hombre", name: "INVICTUS PLATINUM", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H082", brand: "Perfume hombre", name: "INVICTUS VICTORY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H082A", brand: "Perfume hombre", name: "INVICTUS PERFUM", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H082B", brand: "Perfume hombre", name: "INVICTUS ", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H082C", brand: "Perfume hombre", name: "INVICTUS VICTORY", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H083", brand: "Perfume hombre", name: "PARIS HILTON MEN ARAMNY CODE", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H084", brand: "Perfume hombre", name: "BVGARY AQVA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H085", brand: "Perfume hombre", name: "PARIS HILTON MEN", price: 154000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H086", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER SCANDAL LE PARFUM", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H087", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER SCANDAL MEN", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H088", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER SCANDAL ABSOLU", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H089", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER LE BEAU CAJA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H090", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER LE MALE CAJA", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H091", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER LE MALE ELIXIR", price: 148000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H092", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER GARDEN", price: 132000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H093", brand: "Perfume hombre", name: "JEAN PAUL GAULTIER GAULTIER", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H094", brand: "Perfume hombre", name: "DIESEL PLUS GOLD", price: 65000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H095", brand: "Perfume hombre", name: "DIESEL ONLY THE BRAVER", price: 65000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H096", brand: "Perfume hombre", name: "DIESEL ONLY THE BRAVE STREET", price: 65000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H097", brand: "Perfume hombre", name: "DIÉSEL PLUS BLACK", price: 65000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H098", brand: "Perfume hombre", name: "Victorinox/ SWISS ARMY/ CLASIC", price: 65000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H099", brand: "Perfume hombre", name: "SOLO LOEWE", price: 65000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H100", brand: "Perfume hombre", name: "Yve Saint Laurent YSL", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H101", brand: "Perfume hombre", name: "Summer Hammer", price: 116000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H102", brand: "Perfume hombre", name: "SUNGRIA", price: 132000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H102A", brand: "Perfume hombre", name: "CARBONARA", price: 132000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H102B", brand: "Perfume hombre", name: "360 MEN", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H102C", brand: "Perfume hombre", name: "EMPORIO ARMANY YOU", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H102D", brand: "Perfume hombre", name: "EMPORIO ARMANI/YOU INTENSELY", price: 88000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H102E", brand: "Perfume hombre", name: "PURE XS", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H103", brand: "Perfume hombre", name: "PAX", price: 132000, image: "imgplaceholder.jpg", notes: "" }, 
+      { id: "H104", brand: "Perfume hombre", name: "SEX SEA", price: 132000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "H001a", brand: "Perfume hombre", name: "910 Brothers/ TIENDA ONLINE/ ", price: 00, image: "imgplaceholder.jpg", notes: "", type: "banner" }
+    ];
+
+    /* 👩‍🦰 PERFUME MUJER */
+    const productsMujer = [
+      {
+        id: "H001a",
+        brand: "Mantequilla",
+        name: "Victoria´s secret/ POUN CAKE/Pure Seduction ",
+        price: 22000,
+        image: "imgplaceholder.jpg",
+        notes: "",
+        type: "banner"
+      },
+
+      { id: "M001", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M003", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M004", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M005", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M006", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M007", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M008", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M009", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M010", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M011", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M012", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M013", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M014", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M015", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M016", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M017", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 3 UNIDADES DE CREMA CORPORAL DE HIDRATACIÓN PERFUMADA ", price: 99900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M018", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 3 UNIDADES DE CREMA CORPORAL DE HIDRATACIÓN PERFUMADA ", price: 99900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M019", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 3 UNIDADES DE CREMA CORPORAL DE HIDRATACIÓN PERFUMADA ", price: 99900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M020", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 3 UNIDADES DE CREMA CORPORAL DE HIDRATACIÓN PERFUMADA ", price: 99900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M021", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 3 UNIDADES DE CREMA LUXURY CORPORAL DE HIDRATACIÓN  ", price: 115900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M022", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 2 UNIDADES DE CREMA LUXURY CORPORAL DE HIDRATACIÓN  ", price: 68900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M023", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 2 UNIDADES DE CREMA LUXURY CORPORAL DE HIDRATACIÓN  ", price: 68900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M023", brand: "Hidratacion", name: "Victoria´s secret/ COMBO 2 UNIDADES DE CREMA LUXURY CORPORAL DE HIDRATACIÓN  ", price: 68900, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M025", brand: "SPLASH 250ml-Valor por und", name: "Victoria´s secret/ Fragancia Femenina ligera y refrescante/EMPODERADA ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M026", brand: "SPLASH 250ml -Valor por Und", name: "Victoria´s secret/ Fragancia Femenina ligera y refrescante/EJECUTIVA ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M027", brand: "SPLASH 250m-Valor por Und", name: "Victoria´s secret/Fragancia Femenina ligera y refrescante/DULCE ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M028", brand: "SPLASH 250ml-Valor por Und", name: "Victoria´s secret/ Fragancia Femenina ligera y refrescante/FRUTAL ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M029", brand: "SPLASH 250ml-Valor por Und", name: "Victoria´s secret/Fragancia Femenina ligera y refrescante/PARTY ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M030", brand: "SPLASH 250ml-Valor por Und", name: "Victoria´s secret/ Fragancia Femenina ligera y refrescante/RESOLUTIVA ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M031", brand: "SPLASH 250ml-Valor por Und", name: "Victoria´s secret/ Fragancia Femenina ligera y refrescante/LITTLE GIRL ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M032", brand: "SPLASH 250ml-Valor por Und", name: "Victoria´s secret/ Fragancia Femenina ligera/Escarchada/ ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M033", brand: "SPLASH Shimmer 250ml-Valor por Und", name: "Victoria´s secret/ Fragancia Femenina/Escarchada/ ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M034", brand: "SPLASH Shimmer 250ml-Valor por Und", name: "Victoria´s secret/ Fragancia Femenina/ EscarchadA ", price: 28000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M035", brand: "TODOS LOS PROUCTOS", name: "LINEAS MASCULINA Y FEMENINA", price: 00000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M036", brand: "PERFUME MUJER", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M037", brand: "PERFUME MUJER", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M038", brand: "PERFUME MUJER", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M039", brand: "PERFUME MUJER", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M040", brand: "PERFUME MUJER", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M041", brand: "PERFUME MUJER", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M042", brand: "PERFUME MUJER", name: "Fragancia Mujer 4", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M043", brand: "PERFUME MUJER", name: "Victoria´s secret ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M044", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M045", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M046", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M047", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M048", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M049", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M050", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M051", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M052", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M053", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M054", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M055", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M056", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M057", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M058", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M059", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M060", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M061", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M062", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M063", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M064", brand: "Perfume mujer", name: "Fragancia Mujer 4", price: 77000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M065", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M066", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M067", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M068", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M069", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M070", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M071", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M072", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M003", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M003", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Lave Spell ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M0065", brand: "Perfume mujer", name: "Fragancia Mujer 5", price: 105000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "M078", brand: "Perfume mujer", name: "BANNER M078 PERFUME MUJER", price: 0, image: "imgplaceholder.jpg", notes: "", type: "banner" }
+    ];
+
+    /* 💦 SPLASH MEN! */
+    const productsSplashMen = [
+      { id: "SM001", brand: "Splash Men!", name: "Splash Men Fresh 1", price: 35000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SM002", brand: "Splash Men!", name: "Splash Men Sport 2", price: 38000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SM003", brand: "Splash Men!", name: "Splash Men Night 3", price: 39000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SM004", brand: "Splash Men!", name: "Splash Men Ocean 4", price: 36000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SM005", brand: "Splash Men!", name: "Splash Men Citrus 5", price: 37000, image: "imgplaceholder.jpg", notes: "" }
+    ];
+
+    /* 🌸 SPLASH FRAGRANCE WOMEN! */
+    const productsSplashWomen = [
+      { id: "SW001", brand: "Splash Fragrance Women!", name: "Splash Rose 1", price: 36000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SW002", brand: "Splash Fragrance Women!", name: "Splash Sweet 2", price: 38000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SW003", brand: "Splash Fragrance Women!", name: "Splash Floral 3", price: 39000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SW004", brand: "Splash Fragrance Women!", name: "Splash Vanilla 4", price: 40000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "SW005", brand: "Splash Fragrance Women!", name: "Splash Soft 5", price: 37000, image: "imgplaceholder.jpg", notes: "" }
+    ];
+
+    /* 🎒 ACCESORIOS */
+    const productsAccesorios = [
+      { id: "A001", brand: "Accesorios", name: "Neceser JF9", price: 25000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "A002", brand: "Accesorios", name: "Bolsa de regalo", price: 8000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "A003", brand: "Accesorios", name: "Caja premium 1", price: 18000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "A004", brand: "Accesorios", name: "Estuche de viaje", price: 32000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "A005", brand: "Accesorios", name: "Kit muestras JF9", price: 29000, image: "imgplaceholder.jpg", notes: "" }
+    ];
+
+    /* 📦 SECCIÓN 1 (plantilla para futuro) */
+    const productsSeccion1 = [
+      { id: "S101", brand: "Sección 1", name: "Producto S1-1", price: 50000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S102", brand: "Sección 1", name: "Producto S1-2", price: 52000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S103", brand: "Sección 1", name: "Producto S1-3", price: 54000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S104", brand: "Sección 1", name: "Producto S1-4", price: 56000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S105", brand: "Sección 1", name: "Producto S1-5", price: 58000, image: "imgplaceholder.jpg", notes: "" }
+    ];
+
+    /* 📦 SECCIÓN 2 (plantilla para futuro) */
+    const productsSeccion2 = [
+      { id: "S201", brand: "Sección 2", name: "Producto S2-1", price: 60000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S202", brand: "Sección 2", name: "Producto S2-2", price: 62000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S203", brand: "Sección 2", name: "Producto S2-3", price: 64000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S204", brand: "Sección 2", name: "Producto S2-4", price: 66000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S205", brand: "Sección 2", name: "Producto S2-5", price: 68000, image: "imgplaceholder.jpg", notes: "" }
+    ];
+
+    /* 📦 SECCIÓN 3 (plantilla para futuro) */
+    const productsSeccion3 = [
+      { id: "S301", brand: "Sección 3", name: "Producto S3-1", price: 70000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S302", brand: "Sección 3", name: "Producto S3-2", price: 72000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S303", brand: "Sección 3", name: "Producto S3-3", price: 74000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S304", brand: "Sección 3", name: "Producto S3-4", price: 76000, image: "imgplaceholder.jpg", notes: "" },
+      { id: "S305", brand: "Sección 3", name: "Producto S3-5", price: 78000, image: "imgplaceholder.jpg", notes: "" }
+    ];
+
+    let currentCategoryKey = "hombre";
+    let currentProducts = products;
+
+    const categories = {
+      hombre: products,
+      mujer: productsMujer,
+      splashMen: productsSplashMen,
+      splashWomen: productsSplashWomen,
+      accesorios: productsAccesorios,
+      seccion1: productsSeccion1,
+      seccion2: productsSeccion2,
+      seccion3: productsSeccion3
+    };
+
+    // Índice global de productos para el carrito
+    const productIndex = {};
+    Object.values(categories).forEach((list) => {
+      list.forEach((p) => {
+        productIndex[p.id] = p;
+      });
+    });
+
+    // Carrito
+    const cart = {};
+
+    const productGrid = document.getElementById("productGrid");
+    const brandList = document.getElementById("brandList");
+    const searchInput = document.getElementById("searchInput");
+    const productCount = document.getElementById("productCount");
+
+    const cartItemsEl = document.getElementById("cartItems");
+    const cartUnitsEl = document.getElementById("cartUnits");
+    const cartSubtotalEl = document.getElementById("cartSubtotal");
+    const cartDiscountRow = document.getElementById("cartDiscountRow");
+    const cartDiscountEl = document.getElementById("cartDiscount");
+    const cartTotalEl = document.getElementById("cartTotal");
+
+    const generateOrderBtn = document.getElementById("generateOrderBtn");
+
+    function setThemeForCategory(cat) {
+      const body = document.body;
+      body.classList.remove(
+        "theme-hombre",
+        "theme-mujer",
+        "theme-splashMen",
+        "theme-splashWomen",
+        "theme-accesorios",
+        "theme-seccion1",
+        "theme-seccion2",
+        "theme-seccion3"
+      );
+      const map = {
+        hombre: "theme-hombre",
+        mujer: "theme-mujer",
+        splashMen: "theme-splashMen",
+        splashWomen: "theme-splashWomen",
+        accesorios: "theme-accesorios",
+        seccion1: "theme-seccion1",
+        seccion2: "theme-seccion2",
+        seccion3: "theme-seccion3"
+      };
+      body.classList.add(map[cat] || "theme-hombre");
+    }
+
+    function buildBrandButtons() {
+      // Dejar solo el botón "Todos"
+      document.querySelectorAll(".brand-btn").forEach((b) => {
+        if (b.dataset.brand !== "Todos") b.remove();
+      });
+
+      const allBtn = document.querySelector('.brand-btn[data-brand="Todos"]');
+
+      if (allBtn && !allBtn.dataset.listenerAttached) {
+        allBtn.addEventListener("click", () => {
+          document.querySelectorAll(".brand-btn").forEach((b) =>
+            b.classList.remove("active")
+          );
+          allBtn.classList.add("active");
+          renderProducts();
+        });
+        allBtn.dataset.listenerAttached = "true";
+      }
+
+      const brands = Array.from(
+        new Set(currentProducts.map((p) => p.brand))
+      ).sort();
+
+      brands.forEach((brand) => {
+        const btn = document.createElement("button");
+        btn.className = "brand-btn";
+        btn.textContent = brand;
+        btn.dataset.brand = brand;
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".brand-btn").forEach((b) =>
+            b.classList.remove("active")
+          );
+          btn.classList.add("active");
+          renderProducts();
+        });
+        brandList.appendChild(btn);
+      });
+
+      if (allBtn) {
+        document.querySelectorAll(".brand-btn").forEach((b) =>
+          b.classList.remove("active")
+        );
+        allBtn.classList.add("active");
+      }
+    }
+
+    function formatPrice(value) {
+      return value.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+        maximumFractionDigits: 0
+      });
+    }
+
+    function getActiveBrand() {
+      const active = document.querySelector(".brand-btn.active");
+      return active ? active.dataset.brand : "Todos";
+    }
+
+    function getCartSummary() {
+      const entries = Object.values(cart);
+      let units = 0;
+      let subtotal = 0;
+
+      entries.forEach(({ product, quantity }) => {
+        units += quantity;
+        subtotal += quantity * product.price;
+      });
+
+      let discount = 0;
+      // Descuento 20% si lleva 5 o más unidades en total
+      if (units >= 5) {
+        discount = subtotal * 0.2;
+      }
+
+      const total = subtotal - discount;
+
+      return { units, subtotal, discount, total, entries };
+    }
+
+    function renderCart() {
+      const { units, subtotal, discount, total, entries } = getCartSummary();
+
+      cartItemsEl.innerHTML = "";
+
+      if (!entries.length) {
+        cartItemsEl.innerHTML = '<p class="cart-empty">Aún no has agregado productos.</p>';
+      } else {
+        entries.forEach(({ product, quantity }) => {
+          const item = document.createElement("div");
+          item.className = "cart-item";
+
+          const imgSrc = `img/${product.id}.jpg`;
+
+          item.innerHTML = `
+            <img src="${imgSrc}" alt="${product.name}" onerror="this.src='imgplaceholder.jpg'">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${product.name}</div>
+              <div class="cart-item-line">${quantity} x ${formatPrice(product.price)}</div>
+            </div>
+            <div class="cart-item-total">${formatPrice(quantity * product.price)}</div>
+          `;
+
+          cartItemsEl.appendChild(item);
+        });
+      }
+
+      cartUnitsEl.textContent = units;
+      cartSubtotalEl.textContent = formatPrice(subtotal);
+
+      if (discount > 0) {
+        cartDiscountRow.style.display = "flex";
+        cartDiscountEl.textContent = formatPrice(discount);
+      } else {
+        cartDiscountRow.style.display = "none";
+        cartDiscountEl.textContent = formatPrice(0);
+      }
+
+      cartTotalEl.textContent = formatPrice(total);
+    }
+
+    function renderProducts() {
+      const term = searchInput.value.trim().toLowerCase();
+      const activeBrand = getActiveBrand();
+
+      const filtered = currentProducts.filter((p) => {
+        const matchesBrand = activeBrand === "Todos" || p.brand === activeBrand;
+        const matchesTerm =
+          !term ||
+          p.name.toLowerCase().includes(term) ||
+          p.brand.toLowerCase().includes(term);
+        return matchesBrand && matchesTerm;
+      });
+
+      productGrid.innerHTML = "";
+
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent =
+          "No encontramos productos en esta sección con ese filtro. Prueba otra marca o palabra.";
+        productGrid.appendChild(empty);
+        productCount.textContent = "0 productos encontrados";
+        return;
+      }
+
+      filtered.forEach((p) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        const imgSrc = `img/${p.id}.jpg`;
+
+        // Banners: solo imagen, sin precio ni cantidad
+        if (p.type === "banner") {
+          card.innerHTML = `
+            <div class="image-wrapper">
+              <img src="${imgSrc}" alt="${p.name}" onerror="this.src='imgplaceholder.jpg'">
+            </div>
+          `;
+          productGrid.appendChild(card);
+          return;
+        }
+
+        // Productos normales
+        card.innerHTML = `
+          <div class="image-wrapper">
+            <img src="${imgSrc}" alt="${p.name}" onerror="this.src='imgplaceholder.jpg'">
+          </div>
+          <div class="card-body">
+            <h3>${p.name}</h3>
+            <p class="brand">${p.brand}</p>
+            <p class="price">${formatPrice(p.price)}</p>
+
+            <div class="qty-row">
+              <span class="qty-label">Cantidad</span>
+              <div class="qty-controls">
+                <button class="qty-btn minus" data-id="${p.id}">−</button>
+                <input class="qty-input" data-id="${p.id}" type="text" value="0" readonly>
+                <button class="qty-btn plus" data-id="${p.id}">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        productGrid.appendChild(card);
+      });
+
+      productCount.textContent =
+        filtered.length === 1
+          ? "1 producto encontrado"
+          : `${filtered.length} productos encontrados`;
+
+      // Eventos de cantidad
+      document.querySelectorAll(".qty-btn.plus").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          const prod = productIndex[id];
+          if (!prod) return;
+
+          const input = document.querySelector(`.qty-input[data-id="${id}"]`);
+          let current = parseInt(input.value, 10) || 0;
+          current += 1;
+          input.value = current;
+
+          cart[id] = { product: prod, quantity: current };
+          renderCart();
+        });
+      });
+
+      document.querySelectorAll(".qty-btn.minus").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.id;
+          const prod = productIndex[id];
+          if (!prod) return;
+
+          const input = document.querySelector(`.qty-input[data-id="${id}"]`);
+          let current = parseInt(input.value, 10) || 0;
+          current = Math.max(0, current - 1);
+          input.value = current;
+
+          if (current === 0) {
+            delete cart[id];
+          } else {
+            cart[id] = { product: prod, quantity: current };
+          }
+          renderCart();
+        });
+      });
+    }
+
+    // Buscar mientras escribe
+    searchInput.addEventListener("input", () => {
+      renderProducts();
+    });
+
+    // Cambiar de sección (pestañas y menú lateral usan la misma clase)
+    document.querySelectorAll(".category-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const cat = btn.dataset.category;
+        if (!cat) return;
+
+        currentCategoryKey = cat;
+        currentProducts = categories[cat] || [];
+
+        // Activar en todos los botones de categoría
+        document.querySelectorAll(".category-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.category === cat)
+        );
+
+        setThemeForCategory(cat);
+        buildBrandButtons();
+        renderProducts();
+      });
+    });
+
+    // Botón GENERAR PEDIDO -> WhatsApp
+    generateOrderBtn.addEventListener("click", () => {
+      const { units, subtotal, discount, total, entries } = getCartSummary();
+
+      if (!entries.length) {
+        alert("Aún no has seleccionado productos. Agrega cantidades antes de generar tu pedido.");
+        return;
+      }
+
+      const lines = [];
+
+      lines.push("TOMATE TU TIEMPO, seleccioné estos productos y quiero formalizar mi pedido:");
+      lines.push("");
+
+      entries.forEach(({ product, quantity }, index) => {
+        const lineTotal = quantity * product.price;
+        lines.push(
+          `${index + 1}. ${product.name} (${product.brand}) x ${quantity} = ${formatPrice(lineTotal)}`
+        );
+      });
+
+      lines.push("");
+      lines.push(`Unidades: ${units}`);
+      lines.push(`Subtotal: ${formatPrice(subtotal)}`);
+
+      if (discount > 0) {
+        lines.push(`Descuento 20% por llevar 5 o más unidades: -${formatPrice(discount)}`);
+        lines.push(`TE ESTÁS AHORRANDO: ${formatPrice(discount)}`);
+      }
+
+      lines.push(`Total a pagar: ${formatPrice(total)}`);
+      lines.push("");
+      lines.push("Por favor confirma:");
+      lines.push("- Nombre completo");
+      lines.push("- Ciudad / barrio");
+      lines.push("- Forma de pago");
+
+      const encoded = encodeURIComponent(lines.join("\n"));
+      window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, "_blank");
+    });
+
+    // Inicialización
+    setThemeForCategory(currentCategoryKey);
+    buildBrandButtons();
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
