@@ -29,11 +29,71 @@
       color: var(--text-main);
     }
 
+    /* 🔷 INTRO VIDEO A PANTALLA COMPLETA */
+    .intro-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .intro-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .intro-skip-btn {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .intro-skip-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .site-wrapper {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    .site-wrapper.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* HEADER GIGANTE CON DEPORTISTAS */
     header {
-      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      background-image:
+        linear-gradient(135deg, rgba(13, 71, 161, 0.92), rgba(25, 118, 210, 0.88)),
+        url("img/banner-deportistas-gym.jpg"); /* 👈 usa aquí la imagen grupal */
+      background-size: cover;
+      background-position: center;
       color: white;
-      padding: 16px 6vw 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      padding: 28px 6vw 24px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
       position: sticky;
       top: 0;
       z-index: 10;
@@ -42,32 +102,45 @@
     .header-top {
       display: flex;
       flex-wrap: wrap;
-      align-items: baseline;
-      gap: 6px 16px;
+      align-items: flex-end;
+      gap: 10px 20px;
       justify-content: space-between;
     }
 
     .site-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .site-slogan {
-      font-size: 0.9rem;
-      opacity: 0.9;
+      font-size: 1rem;
+      opacity: 0.95;
+      margin-top: 6px;
     }
 
     .creator-note {
-      margin-top: 4px;
-      font-size: 0.75rem;
+      margin-top: 6px;
+      font-size: 0.8rem;
       opacity: 0.9;
+      max-width: 520px;
     }
 
     .shipping-note {
-      margin-top: 6px;
-      font-size: 0.75rem;
+      margin-top: 10px;
+      font-size: 0.8rem;
       opacity: 0.9;
+    }
+
+    .header-badge {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      max-width: 260px;
+      text-align: center;
     }
 
     .layout {
@@ -85,7 +158,7 @@
       border: 1px solid var(--border-soft);
       height: fit-content;
       position: sticky;
-      top: 90px;
+      top: 110px;
     }
 
     .sidebar h2 {
@@ -144,7 +217,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
     .category-btn {
@@ -172,6 +245,33 @@
     .category-btn-side {
       width: 100%;
       text-align: left;
+    }
+
+    /* Banner por categoría (hombres/mujeres/deportistas) */
+    .category-hero {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 170px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: flex-end;
+      padding: 16px 18px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .category-hero-text h1 {
+      font-size: 1.6rem;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .category-hero-text p {
+      font-size: 0.9rem;
+      max-width: 500px;
     }
 
     .top-bar {
@@ -267,6 +367,13 @@
     .brand {
       font-size: 0.8rem;
       color: var(--text-soft);
+    }
+
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 2px;
+      min-height: 34px;
     }
 
     .price {
@@ -549,12 +656,12 @@
       font-size: 0.9rem;
     }
 
-    /* 💬 WhatsApp flotante */
+    /* 💬 WhatsApp flotante – desplegable */
     .floating-wa {
       position: fixed;
       right: 16px;
       bottom: 16px;
-      max-width: 270px;
+      max-width: 280px;
       background: #ffffff;
       border-radius: 18px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.18);
@@ -567,8 +674,35 @@
       font-size: 0.78rem;
     }
 
+    .floating-wa-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .floating-wa-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .floating-wa-toggle {
+      border: none;
+      background: transparent;
+      font-size: 0.75rem;
+      color: #1565c0;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 2px 4px;
+    }
+
     .floating-wa-text {
       line-height: 1.3;
+      display: none;
+    }
+
+    .floating-wa.open .floating-wa-text {
+      display: block;
     }
 
     .floating-wa-number {
@@ -606,6 +740,15 @@
     }
 
     @media (max-width: 900px) {
+      header {
+        position: static;
+        padding: 20px 5vw 18px;
+      }
+
+      .site-title {
+        font-size: 1.8rem;
+      }
+
       .layout {
         grid-template-columns: 1fr;
       }
@@ -614,123 +757,192 @@
         position: static;
         order: -1;
       }
-
-      header {
-        position: static;
-      }
     }
 
     @media (max-width: 600px) {
+      .category-hero {
+        min-height: 150px;
+        padding: 12px 14px;
+      }
+
+      .category-hero-text h1 {
+        font-size: 1.3rem;
+      }
+
+      .category-hero-text p {
+        font-size: 0.8rem;
+      }
+
       .floating-wa {
         left: 10px;
         right: 10px;
         bottom: 10px;
+        max-width: none;
       }
     }
   </style>
 </head>
 <body class="theme-hombre">
-  <header>
-    <div class="header-top">
-      <div>
-        <div class="site-title">7.9 BROTHERS ONLINE</div>
-        <div class="site-slogan">Precios y calidad a el alcance de todos</div>
-        <div class="creator-note">
-          Esta página ha sido creada por A.I.A., especialistas en soluciones comerciales, contacto +573233992683, expertos en construcción de puntos de venta físicos y virtuales
-        </div>
-      </div>
-    </div>
-    <div class="shipping-note">
-      * Por solicitud del cliente, los costos de fletes e impuestos se anexan al valor final.
-    </div>
-  </header>
+  <!-- 🔷 INTRO DE VIDEO (se oculta al terminar) -->
+  <div id="introOverlay" class="intro-overlay">
+    <!-- Guarda tu video como intro.mp4 al lado de este archivo -->
+    <video id="introVideo" class="intro-video" autoplay muted playsinline>
+      <source src="intro.mp4" type="video/mp4" />
+      Tu navegador no soporta video HTML5.
+    </video>
+    <button id="skipIntro" class="intro-skip-btn">SALTAR INTRO</button>
+  </div>
 
-  <main class="layout">
-    <aside class="sidebar">
-      <h2>Categorías</h2>
-      <small>Elige la sección de la tienda</small>
-      <div class="sidebar-categories">
-        <button class="category-btn category-btn-side active" data-category="hombre">Perfume hombre</button>
-        <button class="category-btn category-btn-side" data-category="mujer">Perfume mujer</button>
-        <button class="category-btn category-btn-side" data-category="splashMen">Splash Men!</button>
-        <button class="category-btn category-btn-side" data-category="splashWomen">Splash Fragrance Women!</button>
-        <button class="category-btn category-btn-side" data-category="accesorios">Accesorios</button>
-        <button class="category-btn category-btn-side" data-category="seccion1">Sección 1</button>
-        <button class="category-btn category-btn-side" data-category="seccion2">Sección 2</button>
-        <button class="category-btn category-btn-side" data-category="seccion3">Sección 3</button>
-      </div>
-
-      <h2>Marcas</h2>
-      <small>Filtra el catálogo por marca</small>
-      <button class="brand-btn active" data-brand="Todos">Todos los productos</button>
-      <div id="brandList"></div>
-
-      <!-- 🛒 Carrito -->
-      <div class="cart">
-        <h2>Tu pedido</h2>
-        <small>Selecciona cantidades en los productos</small>
-        <div id="cartItems" class="cart-items"></div>
-        <div class="cart-summary">
-          <div class="cart-summary-row">
-            <span>Unidades:</span>
-            <span id="cartUnits">0</span>
+  <div id="siteWrapper" class="site-wrapper">
+    <header>
+      <div class="header-top">
+        <div>
+          <div class="site-title">7.9 BROTHERS ONLINE</div>
+          <div class="site-slogan">
+            Fragancias para deportistas – hombres y mujeres de alto rendimiento
           </div>
-          <div class="cart-summary-row">
-            <span>Subtotal:</span>
-            <span id="cartSubtotal">$0</span>
-          </div>
-          <div id="cartDiscountRow" class="cart-summary-row cart-discount" style="display:none;">
-            <span>Te estás ahorrando:</span>
-            <span id="cartDiscount">$0</span>
-          </div>
-          <div class="cart-summary-row cart-total">
-            <span>Total a pagar:</span>
-            <span id="cartTotal">$0</span>
+          <div class="creator-note">
+            Esta página ha sido creada por A.I.A., especialistas en soluciones comerciales,
+            contacto +57 323 399 2683, expertos en construcción de puntos de venta físicos y virtuales.
           </div>
         </div>
-      </div>
-    </aside>
-
-    <section class="content">
-      <!-- Pestañas superiores -->
-      <div class="category-tabs">
-        <button class="category-btn active" data-category="hombre">Perfume hombre</button>
-        <button class="category-btn" data-category="mujer">Perfume mujer</button>
-        <button class="category-btn" data-category="splashMen">Splash Men!</button>
-        <button class="category-btn" data-category="splashWomen">Splash Fragrance Women!</button>
-        <button class="category-btn" data-category="accesorios">Accesorios</button>
-        <button class="category-btn" data-category="seccion1">Sección 1</button>
-        <button class="category-btn" data-category="seccion2">Sección 2</button>
-        <button class="category-btn" data-category="seccion3">Sección 3</button>
-      </div>
-
-      <div class="top-bar">
-        <div class="search-wrapper">
-          <input id="searchInput" type="text" placeholder="Buscar por nombre o marca..." />
+        <div class="header-badge">
+          Perfumes y splash pensados para quienes entrenan, sudan y aun así quieren oler increíble.
         </div>
-        <div id="productCount"></div>
       </div>
+      <div class="shipping-note">
+        * Por solicitud del cliente, los costos de fletes e impuestos se anexan al valor final.
+      </div>
+    </header>
 
-      <div id="productGrid" class="grid"></div>
-    </section>
-  </main>
+    <main class="layout">
+      <aside class="sidebar">
+        <h2>Categorías</h2>
+        <small>Elige la sección de la tienda</small>
+        <div class="sidebar-categories">
+          <button class="category-btn category-btn-side active" data-category="hombre">Perfume hombre</button>
+          <button class="category-btn category-btn-side" data-category="mujer">Perfume mujer</button>
+          <button class="category-btn category-btn-side" data-category="splashMen">Splash Men!</button>
+          <button class="category-btn category-btn-side" data-category="splashWomen">Splash Fragrance Women!</button>
+          <button class="category-btn category-btn-side" data-category="accesorios">Accesorios</button>
+          <button class="category-btn category-btn-side" data-category="seccion1">Sección 1</button>
+          <button class="category-btn category-btn-side" data-category="seccion2">Sección 2</button>
+          <button class="category-btn category-btn-side" data-category="seccion3">Sección 3</button>
+        </div>
 
-  <!-- WhatsApp flotante -->
-  <div class="floating-wa">
-    <div class="floating-wa-text">
-      TOMATE TU TIEMPO, selecciona los productos y las cantidades que deseas.
-      Cuando ya quieras formalizar tu pedido da click en el botón GENERAR PEDIDO, Recuerda que los costos de flette NO ESTAN INCLUIDOS,una vez generes tu pedido debes realizar el pago total para que te despachen los productos,el pago de el envio lo realizas al momento de recibirlo en la direccion que asignes,rectifica que los dattos esten correctos para que la entrega no tenga problemas.
+        <h2>Marcas</h2>
+        <small>Filtra el catálogo por marca</small>
+        <button class="brand-btn active" data-brand="Todos">Todos los productos</button>
+        <div id="brandList"></div>
+
+        <!-- 🛒 Carrito -->
+        <div class="cart">
+          <h2>Tu pedido</h2>
+          <small>Selecciona cantidades en los productos</small>
+          <div id="cartItems" class="cart-items"></div>
+          <div class="cart-summary">
+            <div class="cart-summary-row">
+              <span>Unidades:</span>
+              <span id="cartUnits">0</span>
+            </div>
+            <div class="cart-summary-row">
+              <span>Subtotal:</span>
+              <span id="cartSubtotal">$0</span>
+            </div>
+            <div id="cartDiscountRow" class="cart-summary-row cart-discount" style="display:none;">
+              <span>Te estás ahorrando:</span>
+              <span id="cartDiscount">$0</span>
+            </div>
+            <div class="cart-summary-row cart-total">
+              <span>Total a pagar:</span>
+              <span id="cartTotal">$0</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="content">
+        <!-- Pestañas superiores -->
+        <div class="category-tabs">
+          <button class="category-btn active" data-category="hombre">Perfume hombre</button>
+          <button class="category-btn" data-category="mujer">Perfume mujer</button>
+          <button class="category-btn" data-category="splashMen">Splash Men!</button>
+          <button class="category-btn" data-category="splashWomen">Splash Fragrance Women!</button>
+          <button class="category-btn" data-category="accesorios">Accesorios</button>
+          <button class="category-btn" data-category="seccion1">Sección 1</button>
+          <button class="category-btn" data-category="seccion2">Sección 2</button>
+          <button class="category-btn" data-category="seccion3">Sección 3</button>
+        </div>
+
+        <!-- Banner que cambia según la categoría -->
+        <div id="categoryHero" class="category-hero">
+          <div class="category-hero-text">
+            <h1 id="categoryHeroTitle">Fragancias para deportistas</h1>
+            <p id="categoryHeroSubtitle">
+              Perfumes y splash que resisten sudor, calor y entrenamientos intensos, para hombres y mujeres.
+            </p>
+          </div>
+        </div>
+
+        <div class="top-bar">
+          <div class="search-wrapper">
+            <input id="searchInput" type="text" placeholder="Buscar por nombre o marca..." />
+          </div>
+          <div id="productCount"></div>
+        </div>
+
+        <div id="productGrid" class="grid"></div>
+      </section>
+    </main>
+
+    <!-- WhatsApp flotante -->
+    <div class="floating-wa" id="floatingWa">
+      <div class="floating-wa-header">
+        <div class="floating-wa-label">¿Listo para generar tu pedido?</div>
+        <button id="waToggleDetails" class="floating-wa-toggle">Ver instrucciones</button>
+      </div>
+      <div id="floatingWaDetails" class="floating-wa-text">
+        TOMATE TU TIEMPO, selecciona los productos y las cantidades que deseas.
+        Cuando ya quieras formalizar tu pedido da clic en el botón GENERAR PEDIDO.
+        Recuerda que los costos de flete NO ESTÁN INCLUIDOS. Una vez generes tu pedido
+        debes realizar el pago total para que te despachen los productos. El pago del envío lo realizas
+        al momento de recibirlo en la dirección que asignes. Rectifica que los datos estén correctos
+        para que la entrega no tenga problemas.
+      </div>
+      <div class="floating-wa-number">WhatsApp: +57 323 399 2683</div>
+      <button id="generateOrderBtn" class="floating-wa-btn">
+        <span>🧾</span> GENERAR PEDIDO
+      </button>
     </div>
-    <div class="floating-wa-number">WhatsApp: +57 323 399 2683</div>
-    <button id="generateOrderBtn" class="floating-wa-btn">
-      <span>🧾</span> GENERAR PEDIDO
-    </button>
   </div>
 
   <script>
     const whatsappNumber = "573233992683";
 
-    /* 🧴 Productos PERFUME HOMBRE (tus originales) */
+    /* 🔷 INTRO VIDEO LÓGICA */
+    const introOverlay = document.getElementById("introOverlay");
+    const introVideo = document.getElementById("introVideo");
+    const skipIntroBtn = document.getElementById("skipIntro");
+    const siteWrapper = document.getElementById("siteWrapper");
+
+    function showSite() {
+      if (!introOverlay.classList.contains("hidden")) {
+        introOverlay.classList.add("hidden");
+        siteWrapper.classList.add("visible");
+      }
+    }
+
+    if (introVideo) {
+      introVideo.addEventListener("ended", showSite);
+      introVideo.addEventListener("error", showSite);
+    }
+    if (skipIntroBtn) {
+      skipIntroBtn.addEventListener("click", showSite);
+    }
+    // Fallback por si el video no puede reproducirse
+    setTimeout(showSite, 20000);
+
+    /* 🧴 Productos PERFUME HOMBRE (tus originales, sin cambiar nombres ni imágenes) */
     const products = [
       { id: "H001a", brand: "Perfume hombre", name: "910 Brothers/ TIENDA ONLINE/ ", price: 00, image: "imgplaceholder.jpg", notes: "", type: "banner" },
       { id: "H001", brand: "Perfume hombre", name: "212 HÉROES NYC", price: 88000, image: "imgplaceholder.jpg", notes: "" },
@@ -859,22 +1071,14 @@
       { id: "H102C", brand: "Perfume hombre", name: "EMPORIO ARMANY YOU", price: 88000, image: "imgplaceholder.jpg", notes: "" },
       { id: "H102D", brand: "Perfume hombre", name: "EMPORIO ARMANI/YOU INTENSELY", price: 88000, image: "imgplaceholder.jpg", notes: "" },
       { id: "H102E", brand: "Perfume hombre", name: "PURE XS", price: 77000, image: "imgplaceholder.jpg", notes: "" },
-      { id: "H103", brand: "Perfume hombre", name: "PAX", price: 132000, image: "imgplaceholder.jpg", notes: "" }, 
+      { id: "H103", brand: "Perfume hombre", name: "PAX", price: 132000, image: "imgplaceholder.jpg", notes: "" },
       { id: "H104", brand: "Perfume hombre", name: "SEX SEA", price: 132000, image: "imgplaceholder.jpg", notes: "" },
       { id: "H001a", brand: "Perfume hombre", name: "910 Brothers/ TIENDA ONLINE/ ", price: 00, image: "imgplaceholder.jpg", notes: "", type: "banner" }
     ];
 
-    /* 👩‍🦰 PERFUME MUJER */
+    /* 👩‍🦰 PERFUME MUJER (original) */
     const productsMujer = [
-      {
-        id: "H001a",
-        brand: "Mantequilla",
-        name: "Victoria´s secret/ POUN CAKE/Pure Seduction ",
-        price: 22000,
-        image: "imgplaceholder.jpg",
-        notes: "",
-        type: "banner"
-      },
+      { id: "H001a", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "", type: "banner" },
 
       { id: "M001", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
       { id: "M002", brand: "Mantequilla", name: "Victoria´s secret/ POUN CAKE/Pure Seduction ", price: 22000, image: "imgplaceholder.jpg", notes: "" },
@@ -1057,6 +1261,53 @@
 
     const generateOrderBtn = document.getElementById("generateOrderBtn");
 
+    const categoryHero = document.getElementById("categoryHero");
+    const categoryHeroTitle = document.getElementById("categoryHeroTitle");
+    const categoryHeroSubtitle = document.getElementById("categoryHeroSubtitle");
+
+    const heroConfig = {
+      hombre: {
+        title: "Fragancias para deportistas HOMBRES",
+        subtitle: "Aromas intensos que resisten fútbol, gimnasio y días de alto rendimiento.",
+        image: "img/hero-hombre-gym.jpg"
+      },
+      mujer: {
+        title: "Fragancias para deportistas MUJERES",
+        subtitle: "Perfumes y splash para mujeres que entrenan fuerte y quieren oler impecable.",
+        image: "img/hero-mujer-gym.jpg"
+      },
+      splashMen: {
+        title: "Splash refrescante para deportistas",
+        subtitle: "Toques ligeros para después del entrenamiento, partidos o entrenos diarios.",
+        image: "img/hero-hombre-gym.jpg"
+      },
+      splashWomen: {
+        title: "Splash femenino para alto rendimiento",
+        subtitle: "Fragancias ligeras, frescas y femeninas para tu rutina activa.",
+        image: "img/hero-mujer-gym.jpg"
+      },
+      accesorios: {
+        title: "Accesorios para tu rutina deportiva",
+        subtitle: "Neceser, estuches y detalles para llevar tus fragancias a cada entrenamiento.",
+        image: "img/banner-deportistas-gym.jpg"
+      },
+      seccion1: {
+        title: "Sección 1 – Productos especiales",
+        subtitle: "Espacio reservado para futuras líneas deportivas.",
+        image: "img/banner-deportistas-gym.jpg"
+      },
+      seccion2: {
+        title: "Sección 2 – Productos especiales",
+        subtitle: "Catálogo adaptable a tus próximos lanzamientos.",
+        image: "img/banner-deportistas-gym.jpg"
+      },
+      seccion3: {
+        title: "Sección 3 – Productos especiales",
+        subtitle: "Reserva este espacio para nuevas colecciones deportivas.",
+        image: "img/banner-deportistas-gym.jpg"
+      }
+    };
+
     function setThemeForCategory(cat) {
       const body = document.body;
       body.classList.remove(
@@ -1080,6 +1331,23 @@
         seccion3: "theme-seccion3"
       };
       body.classList.add(map[cat] || "theme-hombre");
+    }
+
+    function updateHero(cat) {
+      const conf = heroConfig[cat] || {
+        title: "Fragancias para deportistas",
+        subtitle: "Perfumes y splash que resisten sudor, calor y entrenamientos intensos.",
+        image: "img/banner-deportistas-gym.jpg"
+      };
+
+      if (categoryHero) {
+        categoryHero.style.backgroundImage =
+          "linear-gradient(135deg, rgba(0,0,0,0.65), rgba(0,0,0,0.25)), url('" +
+          conf.image +
+          "')";
+      }
+      if (categoryHeroTitle) categoryHeroTitle.textContent = conf.title;
+      if (categoryHeroSubtitle) categoryHeroSubtitle.textContent = conf.subtitle;
     }
 
     function buildBrandButtons() {
@@ -1139,6 +1407,47 @@
     function getActiveBrand() {
       const active = document.querySelector(".brand-btn.active");
       return active ? active.dataset.brand : "Todos";
+    }
+
+    /* Descripciones distintas para cada producto según la categoría */
+    const descHombreBase = [
+      "Fragancia intensa para deportistas que entrenan fuerte y no quieren perder frescura.",
+      "Aroma masculino que resiste sudor, calor y partidos largos dentro y fuera de la cancha.",
+      "Perfume pensado para futbolistas, runners y amantes del gimnasio de alto rendimiento.",
+      "Ideal para usar después del entrenamiento, reuniones y salidas nocturnas.",
+      "Aroma versátil para el día a día: oficina, cancha y tiempo libre sin perder presencia."
+    ];
+
+    const descMujerBase = [
+      "Fragancia femenina para mujeres que entrenan duro y desean oler impecables todo el día.",
+      "Aroma pensado para deportistas que sudan, se exigen y aun así mantienen elegancia.",
+      "Ideal para usar antes y después del gimnasio, clases de baile o rutinas de alto impacto.",
+      "Perfume ligero pero duradero, perfecto para entrenamientos, estudio y trabajo.",
+      "Notas suaves y modernas para atletas, voleibolistas, corredoras y mujeres activas."
+    ];
+
+    const descSplashBase = [
+      "Splash refrescante para después del gimnasio o el partido.",
+      "Toque ligero para usar varias veces al día sin recargar.",
+      "Ideal para deportistas que quieren frescura continua entre entrenamientos.",
+      "Perfecto para climas cálidos y rutinas intensas.",
+      "Refresca la piel después del sudor y la actividad física."
+    ];
+
+    function getProductDescription(product, indexInList) {
+      const cat = currentCategoryKey;
+
+      if (cat === "hombre") {
+        return descHombreBase[indexInList % descHombreBase.length];
+      }
+      if (cat === "mujer") {
+        return descMujerBase[indexInList % descMujerBase.length];
+      }
+      if (cat === "splashMen" || cat === "splashWomen") {
+        return descSplashBase[indexInList % descSplashBase.length];
+      }
+      // Categorías genéricas
+      return "Producto adaptable a deportistas y personas activas que buscan calidad y buen aroma.";
     }
 
     function getCartSummary() {
@@ -1228,7 +1537,7 @@
         return;
       }
 
-      filtered.forEach((p) => {
+      filtered.forEach((p, indexInList) => {
         const card = document.createElement("article");
         card.className = "card";
         const imgSrc = `img/${p.id}.jpg`;
@@ -1244,6 +1553,8 @@
           return;
         }
 
+        const desc = getProductDescription(p, indexInList);
+
         // Productos normales
         card.innerHTML = `
           <div class="image-wrapper">
@@ -1252,6 +1563,7 @@
           <div class="card-body">
             <h3>${p.name}</h3>
             <p class="brand">${p.brand}</p>
+            <p class="card-desc">${desc}</p>
             <p class="price">${formatPrice(p.price)}</p>
 
             <div class="qty-row">
@@ -1331,6 +1643,7 @@
         );
 
         setThemeForCategory(cat);
+        updateHero(cat);
         buildBrandButtons();
         renderProducts();
       });
@@ -1377,8 +1690,20 @@
       window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, "_blank");
     });
 
+    // WhatsApp: mostrar / ocultar instrucciones
+    const floatingWa = document.getElementById("floatingWa");
+    const waToggleDetails = document.getElementById("waToggleDetails");
+    const floatingWaDetails = document.getElementById("floatingWaDetails");
+
+    if (waToggleDetails && floatingWa) {
+      waToggleDetails.addEventListener("click", () => {
+        floatingWa.classList.toggle("open");
+      });
+    }
+
     // Inicialización
     setThemeForCategory(currentCategoryKey);
+    updateHero(currentCategoryKey);
     buildBrandButtons();
     renderProducts();
     renderCart();
