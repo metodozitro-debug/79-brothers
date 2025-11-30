@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -88,7 +88,7 @@
     header {
       background-image:
         linear-gradient(135deg, rgba(13, 71, 161, 0.92), rgba(25, 118, 210, 0.88)),
-        url("img/banner-deportistas-gym.jpg"); /* 👈 usa aquí la imagen grupal */
+        url("img/banner-deportistas-gym.jpg");
       background-size: cover;
       background-position: center;
       color: white;
@@ -212,7 +212,6 @@
       gap: 14px;
     }
 
-    /* Pestañas superiores de categorías */
     .category-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -247,7 +246,6 @@
       text-align: left;
     }
 
-    /* Banner por categoría (hombres/mujeres/deportistas) */
     .category-hero {
       position: relative;
       border-radius: 18px;
@@ -382,7 +380,6 @@
       font-size: 0.95rem;
     }
 
-    /* Cantidad */
     .qty-row {
       margin-top: 6px;
       display: flex;
@@ -442,9 +439,6 @@
       border: 1px dashed var(--border-soft);
     }
 
-    /* 🎨 TEMAS POR SECCIÓN (colores distintos) */
-
-    /* Perfume hombre */
     body.theme-hombre .image-wrapper {
       background: #e3f2fd;
     }
@@ -458,7 +452,6 @@
       border-color: #bbdefb;
     }
 
-    /* Perfume mujer */
     body.theme-mujer .image-wrapper {
       background: #fce4ec;
     }
@@ -472,7 +465,6 @@
       border-color: #f48fb1;
     }
 
-    /* Splash Men! */
     body.theme-splashMen .image-wrapper {
       background: #e0f2f1;
     }
@@ -486,7 +478,6 @@
       border-color: #80cbc4;
     }
 
-    /* Splash Fragrance Women! */
     body.theme-splashWomen .image-wrapper {
       background: #fff3e0;
     }
@@ -500,7 +491,6 @@
       border-color: #ffb74d;
     }
 
-    /* Accesorios */
     body.theme-accesorios .image-wrapper {
       background: #f3e5f5;
     }
@@ -514,7 +504,6 @@
       border-color: #ce93d8;
     }
 
-    /* Sección 1 */
     body.theme-seccion1 .image-wrapper {
       background: #e8f5e9;
     }
@@ -528,7 +517,6 @@
       border-color: #a5d6a7;
     }
 
-    /* Sección 2 */
     body.theme-seccion2 .image-wrapper {
       background: #ede7f6;
     }
@@ -542,7 +530,6 @@
       border-color: #b39ddb;
     }
 
-    /* Sección 3 */
     body.theme-seccion3 .image-wrapper {
       background: #fff8e1;
     }
@@ -556,7 +543,6 @@
       border-color: #ffe082;
     }
 
-    /* 🛒 Carrito en sidebar */
     .cart {
       margin-top: 14px;
       padding-top: 10px;
@@ -656,7 +642,6 @@
       font-size: 0.9rem;
     }
 
-    /* 💬 WhatsApp flotante – desplegable */
     .floating-wa {
       position: fixed;
       right: 16px;
@@ -942,7 +927,29 @@
     // Fallback por si el video no puede reproducirse
     setTimeout(showSite, 20000);
 
-    /* 🧴 Productos PERFUME HOMBRE (tus originales, sin cambiar nombres ni imágenes) */
+    // 🔊 Intentar reproducir el video al cargar (normalmente en silencio)
+    window.addEventListener("load", () => {
+      if (!introVideo) return;
+      const playPromise = introVideo.play();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(() => {
+          // Si el navegador bloquea el autoplay, esperamos interacción del usuario
+        });
+      }
+    });
+
+    // 🔊 Al primer clic sobre el overlay, activamos el AUDIO y reproducimos desde el inicio
+    if (introOverlay && introVideo) {
+      const startIntroWithSound = () => {
+        introVideo.muted = false;       // activamos audio
+        introVideo.currentTime = 0;     // desde el inicio
+        introVideo.play().catch(() => {});
+        introOverlay.removeEventListener("click", startIntroWithSound);
+      };
+      introOverlay.addEventListener("click", startIntroWithSound);
+    }
+
+    /* 🧴 Productos PERFUME HOMBRE (tus originales) */
     const products = [
       { id: "H001a", brand: "Perfume hombre", name: "910 Brothers/ TIENDA ONLINE/ ", price: 00, image: "imgplaceholder.jpg", notes: "", type: "banner" },
       { id: "H001", brand: "Perfume hombre", name: "212 HÉROES NYC", price: 88000, image: "imgplaceholder.jpg", notes: "" },
@@ -1236,7 +1243,6 @@
       seccion3: productsSeccion3
     };
 
-    // Índice global de productos para el carrito
     const productIndex = {};
     Object.values(categories).forEach((list) => {
       list.forEach((p) => {
@@ -1244,7 +1250,6 @@
       });
     });
 
-    // Carrito
     const cart = {};
 
     const productGrid = document.getElementById("productGrid");
@@ -1351,7 +1356,6 @@
     }
 
     function buildBrandButtons() {
-      // Dejar solo el botón "Todos"
       document.querySelectorAll(".brand-btn").forEach((b) => {
         if (b.dataset.brand !== "Todos") b.remove();
       });
@@ -1409,7 +1413,6 @@
       return active ? active.dataset.brand : "Todos";
     }
 
-    /* Descripciones distintas para cada producto según la categoría */
     const descHombreBase = [
       "Fragancia intensa para deportistas que entrenan fuerte y no quieren perder frescura.",
       "Aroma masculino que resiste sudor, calor y partidos largos dentro y fuera de la cancha.",
@@ -1446,7 +1449,6 @@
       if (cat === "splashMen" || cat === "splashWomen") {
         return descSplashBase[indexInList % descSplashBase.length];
       }
-      // Categorías genéricas
       return "Producto adaptable a deportistas y personas activas que buscan calidad y buen aroma.";
     }
 
@@ -1461,7 +1463,6 @@
       });
 
       let discount = 0;
-      // Descuento 20% si lleva 5 o más unidades en total
       if (units >= 5) {
         discount = subtotal * 0.2;
       }
@@ -1542,7 +1543,6 @@
         card.className = "card";
         const imgSrc = `img/${p.id}.jpg`;
 
-        // Banners: solo imagen, sin precio ni cantidad
         if (p.type === "banner") {
           card.innerHTML = `
             <div class="image-wrapper">
@@ -1555,7 +1555,6 @@
 
         const desc = getProductDescription(p, indexInList);
 
-        // Productos normales
         card.innerHTML = `
           <div class="image-wrapper">
             <img src="${imgSrc}" alt="${p.name}" onerror="this.src='imgplaceholder.jpg'">
@@ -1585,7 +1584,6 @@
           ? "1 producto encontrado"
           : `${filtered.length} productos encontrados`;
 
-      // Eventos de cantidad
       document.querySelectorAll(".qty-btn.plus").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.id;
@@ -1623,12 +1621,10 @@
       });
     }
 
-    // Buscar mientras escribe
     searchInput.addEventListener("input", () => {
       renderProducts();
     });
 
-    // Cambiar de sección (pestañas y menú lateral usan la misma clase)
     document.querySelectorAll(".category-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const cat = btn.dataset.category;
@@ -1637,7 +1633,6 @@
         currentCategoryKey = cat;
         currentProducts = categories[cat] || [];
 
-        // Activar en todos los botones de categoría
         document.querySelectorAll(".category-btn").forEach((b) =>
           b.classList.toggle("active", b.dataset.category === cat)
         );
@@ -1649,7 +1644,6 @@
       });
     });
 
-    // Botón GENERAR PEDIDO -> WhatsApp
     generateOrderBtn.addEventListener("click", () => {
       const { units, subtotal, discount, total, entries } = getCartSummary();
 
@@ -1690,10 +1684,8 @@
       window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, "_blank");
     });
 
-    // WhatsApp: mostrar / ocultar instrucciones
     const floatingWa = document.getElementById("floatingWa");
     const waToggleDetails = document.getElementById("waToggleDetails");
-    const floatingWaDetails = document.getElementById("floatingWaDetails");
 
     if (waToggleDetails && floatingWa) {
       waToggleDetails.addEventListener("click", () => {
@@ -1701,7 +1693,6 @@
       });
     }
 
-    // Inicialización
     setThemeForCategory(currentCategoryKey);
     updateHero(currentCategoryKey);
     buildBrandButtons();
